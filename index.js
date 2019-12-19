@@ -19,7 +19,6 @@ ArrayLibrary.prototype.take = function(array, n) {
 }
 
 // take tests
-// take(null)
 // take(undefined)
 // take(not array)
 // take(arr) -- without n : return arr
