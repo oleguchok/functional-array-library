@@ -2,12 +2,16 @@
 
 function ArrayLibrary() {}
 
-ArrayLibrary.prototype.take = function(array, n) {
+function checkIsItAnArray(array) {
     if (!Array.isArray(array)) {
         throw new TypeError('Provided collection is not array');
     }
+}
 
-    if (n > 0) {
+ArrayLibrary.prototype.take = function(array, n) {
+    checkIsItAnArray(array);
+
+    if (n > 0 || n === undefined) {
         return array.slice(0, n);
     }
 
