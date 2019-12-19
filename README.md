@@ -26,4 +26,4 @@ First, you should implement the library using ES5, after completing the chain an
 
 ## Testing
 I used Jest testing framework for unit tests.
-You can run unit tests from command line (`npm install jest --global`) and then just run: `jest`
+You can run unit tests from command line (`npm install jest --global`) and then just run: `jest`. File _jest.config.js_ is required in order to run jest through CLI.
