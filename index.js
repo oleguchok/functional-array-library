@@ -18,16 +18,21 @@ ArrayLibrary.prototype.take = function(array, n) {
     return [];
 }
 
-// take tests
-// take(undefined)
-// take(not array)
-// take(arr) -- without n : return arr
-// take(arr, n), where n undefined : return arr
-// take(arr, n), where n null : return []
-// take(arr, n), where n NaN : return []
-// take(arr, n), where n < 0 : return []
-// take(arr, n), where n == 0 : return []
-// take(arr, n), where n > arr.length : return arr
-// take(arr, n), where n < arr.length && n > 0: return first n elements of arr
+ArrayLibrary.prototype.skip = function(array, n) {
+    checkIsItAnArray(array);
+}
 
-let library = new ArrayLibrary();
+// skip tests:
+// skip(null)
+// skip(undefined)
+// skip(not array)
+// skip(arr) : return arr
+// skip(arr, n), where n undefined : return arr
+// skip(arr, n), where n null : return arr
+// skip(arr, n), where n NaN : return arr
+// skip(arr, n), where n < 0 : return arr
+// skip(arr, n), where n == 0 : return arr
+// skip(arr, n), where n > arr.length : return []
+// skip(arr, n), where n < arr.length && n > 0: skip first n elements of arr and return left arr elements
+
+module.exports = ArrayLibrary;
