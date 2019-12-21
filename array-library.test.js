@@ -143,3 +143,51 @@ test('skip should return new array without skipped first n elements', function()
     var array = [1,2,3];
     expect(lib.skip(array, 2)).toEqual([3]);
 });
+
+/* map tests */
+test('map should throw TypeError if array parameter is null', function() {
+    var lib = new ArrayLibrary();
+    expect(function() {
+        return lib.map(null);
+    }).toThrow(TypeError);
+});
+
+test('map should throw TypeError if array parameter is undefined', function() {
+    var lib = new ArrayLibrary();
+    expect(function() {
+        return lib.map(undefined);
+    }).toThrow(TypeError);
+});
+
+test('map should throw TypeError if array parameter is not array', function() {
+    var lib = new ArrayLibrary();
+    expect(function() {
+        return lib.map({});
+    }).toThrow(TypeError);
+
+    expect(function() {
+        return lib.map('string');
+    }).toThrow(TypeError);
+
+    expect(function() {
+        return lib.map(666);
+    }).toThrow(TypeError);
+});
+
+test('map should return an array if callback parameter is not a function', function() {
+    var lib = new ArrayLibrary();
+    var array = [1,2,3];
+    expect(lib.map(array)).toEqual(array);
+    expect(lib.map(array, null)).toEqual(array);
+    expect(lib.map(array, 666)).toEqual(array);
+    expect(lib.map(array, 'string')).toEqual(array);
+});
+
+test('map should return new array with applied callback function to each element', function() {
+    var lib = new ArrayLibrary();
+    var array = [1,2,3];
+    var result = lib.map(array, function(element) {
+        return element * 2;
+    });
+    expect(result).toEqual([2,4,6]);
+});

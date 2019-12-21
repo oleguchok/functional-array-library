@@ -28,4 +28,21 @@ ArrayLibrary.prototype.skip = function(array, n) {
     return array;
 }
 
+ArrayLibrary.prototype.map = function(array, callback) {
+    checkIsItAnArray(array);
+
+    if (typeof callback === "function") {
+        var result = [];
+        array.forEach(element => {
+            result.push(callback(element));
+        });
+
+        return result;
+    }
+
+    return array;
+}
+
 module.exports = ArrayLibrary;
+var lib = new ArrayLibrary();
+lib.map([1,2], function(a){return a;});
