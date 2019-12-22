@@ -1,6 +1,8 @@
 'use strict';
 
-function ArrayLibrary() {}
+function ArrayLibrary() {
+    this._memo = {};
+}
 
 function checkIsItAnArray(array) {
     if (!Array.isArray(array)) {
@@ -90,6 +92,18 @@ ArrayLibrary.prototype.forEach = function(array, callback) {
 
     for (var index = 0; index < array.length; index++) {
         callback(array[index]);
+    }
+}
+
+ArrayLibrary.prototype.sum = function(array) {
+    if (array in this._memo) {
+        return this._memo[array];
+    } else {
+        var value = this.reduce(array, function(accumulator, currentValue) {
+            return accumulator + currentValue;
+        });
+        this._memo[array] = value;
+        return value;
     }
 }
 

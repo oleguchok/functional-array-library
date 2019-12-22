@@ -383,6 +383,50 @@ test('foreach should iterate through array and apply callback to each element', 
     };
 
     lib.forEach(array, callback);
-    
+
     expect(doubledCopy).toEqual([2,4,6]);
+});
+
+/* sum tests */
+test('sum should throw TypeError if array parameter is null', function() {
+    var lib = new ArrayLibrary();
+    expect(function() {
+        return lib.sum(null);
+    }).toThrow(TypeError);
+});
+
+test('sum should throw TypeError if array parameter is undefined', function() {
+    var lib = new ArrayLibrary();
+    expect(function() {
+        return lib.sum(undefined);
+    }).toThrow(TypeError);
+});
+
+test('sum should throw TypeError if array parameter is not array', function() {
+    var lib = new ArrayLibrary();
+    expect(function() {
+        return lib.sum({});
+    }).toThrow(TypeError);
+
+    expect(function() {
+        return lib.sum('string');
+    }).toThrow(TypeError);
+
+    expect(function() {
+        return lib.sum(666);
+    }).toThrow(TypeError);
+});
+
+test('sum should sum all elements in array', function() {
+    var lib = new ArrayLibrary();
+    var array = [1,2,3];
+    expect(lib.sum(array)).toBe(6);
+});
+
+test('sum should memoize sum for array', function() {
+    var lib = new ArrayLibrary();
+    var array = [1,2,3];
+    expect(lib.sum(array)).toBe(6);
+
+    expect(lib._memo[array]).toBe(6);
 });
