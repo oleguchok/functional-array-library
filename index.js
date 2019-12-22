@@ -84,4 +84,13 @@ ArrayLibrary.prototype.filter = function(array, callback) {
     return result;
 }
 
+ArrayLibrary.prototype.forEach = function(array, callback) {
+    checkIsItAnArray(array);
+    checkIsCallbackIsAFunction(callback);
+
+    for (var index = 0; index < array.length; index++) {
+        callback(array[index]);
+    }
+}
+
 module.exports = ArrayLibrary;

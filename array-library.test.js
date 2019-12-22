@@ -332,3 +332,57 @@ test('filter should return filtered array by condition in callback', function() 
     }))
     .toEqual([1,3]);
 });
+
+/* foreach tests */
+test('foreach should throw TypeError if array parameter is null', function() {
+    var lib = new ArrayLibrary();
+    expect(function() {
+        return lib.forEach(null);
+    }).toThrow(TypeError);
+});
+
+test('foreach should throw TypeError if array parameter is undefined', function() {
+    var lib = new ArrayLibrary();
+    expect(function() {
+        return lib.forEach(undefined);
+    }).toThrow(TypeError);
+});
+
+test('foreach should throw TypeError if array parameter is not array', function() {
+    var lib = new ArrayLibrary();
+    expect(function() {
+        return lib.forEach({});
+    }).toThrow(TypeError);
+
+    expect(function() {
+        return lib.forEach('string');
+    }).toThrow(TypeError);
+
+    expect(function() {
+        return lib.forEach(666);
+    }).toThrow(TypeError);
+});
+
+test('foreach should throw TypeError if callback parameter is not a function', function() {
+    var lib = new ArrayLibrary();
+    var array = [1,2,3];
+    expect(function() {
+        return lib.forEach(array);
+    }).toThrow(TypeError);
+    expect(function() {return lib.forEach(array, null);}).toThrow(TypeError);
+    expect(function() {return lib.forEach(array, 666);}).toThrow(TypeError);
+    expect(function() {return lib.forEach(array, 'string');}).toThrow(TypeError);
+});
+
+test('foreach should iterate through array and apply callback to each element', function() {
+    var lib = new ArrayLibrary();
+    var array = [1,2,3];
+    var doubledCopy = [];
+    var callback = function(element) {
+        doubledCopy.push(element*2);
+    };
+
+    lib.forEach(array, callback);
+    
+    expect(doubledCopy).toEqual([2,4,6]);
+});
