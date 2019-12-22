@@ -8,6 +8,12 @@ function checkIsItAnArray(array) {
     }
 }
 
+function checkIsCallbackIsAFunction(callback) {
+    if (typeof callback !== "function") {
+        throw new TypeError('Provided callback is not a function');
+    }
+}
+
 ArrayLibrary.prototype.take = function(array, n) {
     checkIsItAnArray(array);
 
@@ -30,10 +36,7 @@ ArrayLibrary.prototype.skip = function(array, n) {
 
 ArrayLibrary.prototype.map = function(array, callback) {
     checkIsItAnArray(array);
-
-    if (typeof callback !== "function") {
-        throw new TypeError('Provided callback is not a function');
-    }
+    checkIsCallbackIsAFunction(callback);
 
     var result = [];
     array.forEach(function(element) {
@@ -50,9 +53,7 @@ ArrayLibrary.prototype.reduce = function(array, callback, initialValue) {
         throw new TypeError('Reduce of empty array with no initial value');
     }
 
-    if (typeof callback !== "function") {
-        throw new TypeError('Provided callback is not a function');
-    }
+    checkIsCallbackIsAFunction(callback);
 
     if (initialValue === undefined) {
         var accumulator = array[0];
@@ -67,6 +68,20 @@ ArrayLibrary.prototype.reduce = function(array, callback, initialValue) {
     }
 
     return accumulator;
+}
+
+ArrayLibrary.prototype.filter = function(array, callback) {
+    checkIsItAnArray(array);
+    checkIsCallbackIsAFunction(callback);
+
+    var result = [];
+    array.forEach(function(element) {
+        if (callback(element)) {
+            result.push(element);
+        }
+    });
+
+    return result;
 }
 
 module.exports = ArrayLibrary;

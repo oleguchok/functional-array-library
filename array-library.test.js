@@ -273,3 +273,62 @@ test('reduce should return value, reduced by callback, starting from initial val
         4)
     ).toBe(5);
 });
+
+/* filter tests */
+test('filter should throw TypeError if array parameter is null', function() {
+    var lib = new ArrayLibrary();
+    expect(function() {
+        return lib.filter(null);
+    }).toThrow(TypeError);
+});
+
+test('filter should throw TypeError if array parameter is undefined', function() {
+    var lib = new ArrayLibrary();
+    expect(function() {
+        return lib.filter(undefined);
+    }).toThrow(TypeError);
+});
+
+test('filter should throw TypeError if array parameter is not array', function() {
+    var lib = new ArrayLibrary();
+    expect(function() {
+        return lib.filter({});
+    }).toThrow(TypeError);
+
+    expect(function() {
+        return lib.filter('string');
+    }).toThrow(TypeError);
+
+    expect(function() {
+        return lib.filter(666);
+    }).toThrow(TypeError);
+});
+
+test('filter should throw TypeError if callback parameter is not a function', function() {
+    var lib = new ArrayLibrary();
+    var array = [1,2,3];
+    expect(function() {
+        return lib.filter(array);
+    }).toThrow(TypeError);
+    expect(function() {return lib.filter(array, null);}).toThrow(TypeError);
+    expect(function() {return lib.filter(array, 666);}).toThrow(TypeError);
+    expect(function() {return lib.filter(array, 'string');}).toThrow(TypeError);
+});
+
+test('filter should return empty array if none of the elements matched the condition in callback', function() {
+    var lib = new ArrayLibrary();
+    var array = [1,2,3];
+    expect(lib.filter(array, function(element) {
+        return element > 3;
+    }))
+    .toEqual([]);
+});
+
+test('filter should return filtered array by condition in callback', function() {
+    var lib = new ArrayLibrary();
+    var array = [1,2,3];
+    expect(lib.filter(array, function(element) {
+        return element % 2;
+    }))
+    .toEqual([1,3]);
+});
