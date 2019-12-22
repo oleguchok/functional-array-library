@@ -174,13 +174,13 @@ test('map should throw TypeError if array parameter is not array', function() {
     }).toThrow(TypeError);
 });
 
-test('map should return an array if callback parameter is not a function', function() {
+test('map should throw TypeError if callback parameter is not a function', function() {
     var lib = new ArrayLibrary();
     var array = [1,2,3];
-    expect(lib.map(array)).toEqual(array);
-    expect(lib.map(array, null)).toEqual(array);
-    expect(lib.map(array, 666)).toEqual(array);
-    expect(lib.map(array, 'string')).toEqual(array);
+    expect(function() {return lib.map(array);}).toThrow(TypeError);
+    expect(function() {return lib.map(array, null);}).toThrow(TypeError);
+    expect(function() {return lib.map(array, 666);}).toThrow(TypeError);
+    expect(function() {return lib.map(array, 'string');}).toThrow(TypeError);
 });
 
 test('map should return new array with applied callback function to each element', function() {
@@ -190,4 +190,86 @@ test('map should return new array with applied callback function to each element
         return element * 2;
     });
     expect(result).toEqual([2,4,6]);
+});
+
+/* reduce tests */
+test('reduce should throw TypeError if array parameter is null', function() {
+    var lib = new ArrayLibrary();
+    expect(function() {
+        return lib.reduce(null);
+    }).toThrow(TypeError);
+});
+
+test('reduce should throw TypeError if array parameter is undefined', function() {
+    var lib = new ArrayLibrary();
+    expect(function() {
+        return lib.reduce(undefined);
+    }).toThrow(TypeError);
+});
+
+test('reduce should throw TypeError if array parameter is not array', function() {
+    var lib = new ArrayLibrary();
+    expect(function() {
+        return lib.reduce({});
+    }).toThrow(TypeError);
+
+    expect(function() {
+        return lib.reduce('string');
+    }).toThrow(TypeError);
+
+    expect(function() {
+        return lib.reduce(666);
+    }).toThrow(TypeError);
+});
+
+test('reduce should throw TypeError if callback parameter is not a function', function() {
+    var lib = new ArrayLibrary();
+    var array = [1,2,3];
+    expect(function() {
+        return lib.reduce(array);
+    }).toThrow(TypeError);
+    expect(function() {return lib.reduce(array, null);}).toThrow(TypeError);
+    expect(function() {return lib.reduce(array, 666);}).toThrow(TypeError);
+    expect(function() {return lib.reduce(array, 'string');}).toThrow(TypeError);
+});
+
+test('reduce should throw TypeError if provided array is empty', function() {
+    var lib = new ArrayLibrary();
+    expect(function() {
+        return lib.reduce([], function(accumulator, currentValue) { return currentValue; });
+    }).toThrow(TypeError);
+});
+
+test('reduce should return first element in array if there is only one element in array', function() {
+    var lib = new ArrayLibrary();
+    expect(lib.reduce([10], function(){})).toBe(10);
+});
+
+test('reduce should return value, reduced by callback', function() {
+    var lib = new ArrayLibrary();
+    expect(lib.reduce([1,2,3], function(accumulator, currentValue){
+        return accumulator + currentValue;
+    })).toBe(6);
+});
+
+test('reduce should return value, reduced by callback, starting from initial value', function() {
+    var lib = new ArrayLibrary();
+    expect(
+        lib.reduce([1,2,3], 
+        function(accumulator, currentValue){
+            return accumulator + currentValue;
+        },
+        4)
+    ).toBe(10);
+});
+
+test('reduce should return value, reduced by callback, starting from initial value, if there is only one element in array', function() {
+    var lib = new ArrayLibrary();
+    expect(
+        lib.reduce([1], 
+        function(accumulator, currentValue){
+            return accumulator + currentValue;
+        },
+        4)
+    ).toBe(5);
 });

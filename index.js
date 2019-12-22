@@ -31,18 +31,42 @@ ArrayLibrary.prototype.skip = function(array, n) {
 ArrayLibrary.prototype.map = function(array, callback) {
     checkIsItAnArray(array);
 
-    if (typeof callback === "function") {
-        var result = [];
-        array.forEach(element => {
-            result.push(callback(element));
-        });
-
-        return result;
+    if (typeof callback !== "function") {
+        throw new TypeError('Provided callback is not a function');
     }
 
-    return array;
+    var result = [];
+    array.forEach(function(element) {
+        result.push(callback(element));
+    });
+
+    return result;
+}
+
+ArrayLibrary.prototype.reduce = function(array, callback, initialValue) {
+    checkIsItAnArray(array);
+
+    if (array.length == 0 && initialValue === undefined) {
+        throw new TypeError('Reduce of empty array with no initial value');
+    }
+
+    if (typeof callback !== "function") {
+        throw new TypeError('Provided callback is not a function');
+    }
+
+    if (initialValue === undefined) {
+        var accumulator = array[0];
+        array.slice(1).forEach(function(element) {
+            accumulator = callback(accumulator, element);
+        });
+    } else {
+        var accumulator = initialValue;
+        array.forEach(function(element) {
+            accumulator = callback(accumulator, element);
+        });
+    }
+
+    return accumulator;
 }
 
 module.exports = ArrayLibrary;
-var lib = new ArrayLibrary();
-lib.map([1,2], function(a){return a;});
