@@ -1,4 +1,4 @@
-var ArrayLibrary = require('./index');
+var ArrayLibrary = require('./array-library.es5');
 
 /* take */
 test('array parameter is null', function() {
