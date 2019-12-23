@@ -16,8 +16,10 @@ function checkIsCallbackIsAFunction(callback) {
     }
 }
 
-ArrayLibrary.prototype.take = function(array, n) {
+ArrayLibrary.prototype.take = function() {
     if (arguments.length > 1 || this._chained === undefined) {
+        var array = arguments[0];
+        var n = arguments[1];
         checkIsItAnArray(array);
 
         if (n > 0 || n === undefined) {

@@ -1,4 +1,5 @@
-var ArrayLibrary = require('./array-library.es5');
+// var ArrayLibrary = require('./array-library.es5');
+import ArrayLibrary from "./array-library.es6";
 
 /* take */
 test('array parameter is null', function() {
