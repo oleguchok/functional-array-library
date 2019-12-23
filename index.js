@@ -17,73 +17,101 @@ function checkIsCallbackIsAFunction(callback) {
 }
 
 ArrayLibrary.prototype.take = function(array, n) {
-    checkIsItAnArray(array);
+    if (arguments.length > 1 || this._chained === undefined) {
+        checkIsItAnArray(array);
 
-    if (n > 0 || n === undefined) {
-        return array.slice(0, n);
+        if (n > 0 || n === undefined) {
+            return array.slice(0, n);
+        }
+
+        return [];
+    } else {
+        this._chained = this.take(this._chained, arguments[0]);
+        return this;
     }
-
-    return [];
 }
 
 ArrayLibrary.prototype.skip = function(array, n) {
-    checkIsItAnArray(array);
+    if (arguments.length > 1 || this._chained === undefined) {
+        checkIsItAnArray(array);
 
-    if (n > 0) {
-        return array.slice(n);
+        if (n > 0) {
+            return array.slice(n);
+        }
+
+        return array;
+    } else {
+        this._chained = this.skip(this._chained, arguments[0]);
+        return this;
     }
-
-    return array;
 }
 
 ArrayLibrary.prototype.map = function(array, callback) {
-    checkIsItAnArray(array);
-    checkIsCallbackIsAFunction(callback);
+    if (arguments.length > 1) {
+        checkIsItAnArray(array);
+        checkIsCallbackIsAFunction(callback);
 
-    var result = [];
-    array.forEach(function(element) {
-        result.push(callback(element));
-    });
+        var result = [];
+        array.forEach(function(element) {
+            result.push(callback(element));
+        });
 
-    return result;
+        return result;
+    } else {
+        this._chained = this.map(this._chained, arguments[0]);
+        return this;
+    }
 }
 
 ArrayLibrary.prototype.reduce = function(array, callback, initialValue) {
-    checkIsItAnArray(array);
+    if (arguments.length > 1) {
+        checkIsItAnArray(array);
 
-    if (array.length == 0 && initialValue === undefined) {
-        throw new TypeError('Reduce of empty array with no initial value');
-    }
+        if (array.length == 0 && initialValue === undefined) {
+            throw new TypeError('Reduce of empty array with no initial value');
+        }
 
-    checkIsCallbackIsAFunction(callback);
+        checkIsCallbackIsAFunction(callback);
 
-    if (initialValue === undefined) {
-        var accumulator = array[0];
-        array.slice(1).forEach(function(element) {
-            accumulator = callback(accumulator, element);
-        });
+        if (initialValue === undefined) {
+            var accumulator = array[0];
+            array.slice(1).forEach(function(element) {
+                accumulator = callback(accumulator, element);
+            });
+        } else {
+            var accumulator = initialValue;
+            array.forEach(function(element) {
+                accumulator = callback(accumulator, element);
+            });
+        }
+
+        return accumulator;
     } else {
-        var accumulator = initialValue;
-        array.forEach(function(element) {
-            accumulator = callback(accumulator, element);
-        });
+        this._chained = this.reduce(this._chained, arguments[0], arguments[1]);
+        return this;
     }
-
-    return accumulator;
 }
 
-ArrayLibrary.prototype.filter = function(array, callback) {
-    checkIsItAnArray(array);
-    checkIsCallbackIsAFunction(callback);
+ArrayLibrary.prototype.filter = function() {
+    if (arguments.length > 1) {
+        var array = arguments[0];
+        var callback = arguments[1];
 
-    var result = [];
-    array.forEach(function(element) {
-        if (callback(element)) {
-            result.push(element);
-        }
-    });
+        checkIsItAnArray(array);
+        checkIsCallbackIsAFunction(callback);
 
-    return result;
+        var result = [];
+        array.forEach(function(element) {
+            if (callback(element)) {
+                result.push(element);
+            }
+        });
+
+        return result;
+    } else {
+        this._chained = this.filter(this._chained, arguments[0]);
+        return this;
+    }
 }
 
 ArrayLibrary.prototype.forEach = function(array, callback) {
@@ -105,6 +133,16 @@ ArrayLibrary.prototype.sum = function(array) {
         this._memo[array] = value;
         return value;
     }
+}
+
+ArrayLibrary.prototype.chain = function(array) {
+    checkIsItAnArray(array);
+    this._chained = array;
+    return this;
+}
+
+ArrayLibrary.prototype.value = function() {
+    return this._chained;
 }
 
 module.exports = ArrayLibrary;

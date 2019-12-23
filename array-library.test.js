@@ -430,3 +430,60 @@ test('sum should memoize sum for array', function() {
 
     expect(lib._memo[array]).toBe(6);
 });
+
+/* chain tests */
+test('chain should throw TypeError if array parameter is null', function() {
+    var lib = new ArrayLibrary();
+    expect(function() {
+        return lib.chain(null);
+    }).toThrow(TypeError);
+});
+
+test('chain should throw TypeError if array parameter is undefined', function() {
+    var lib = new ArrayLibrary();
+    expect(function() {
+        return lib.chain(undefined);
+    }).toThrow(TypeError);
+});
+
+test('chain should throw TypeError if array parameter is not array', function() {
+    var lib = new ArrayLibrary();
+    expect(function() {
+        return lib.chain({});
+    }).toThrow(TypeError);
+
+    expect(function() {
+        return lib.chain('string');
+    }).toThrow(TypeError);
+
+    expect(function() {
+        return lib.chain(666);
+    }).toThrow(TypeError);
+});
+
+test('chain should store provided array in private field', function() {
+    var lib = new ArrayLibrary();
+    var array = [1,2,3];
+    lib.chain(array);
+    expect(lib._chained).toEqual(array);
+});
+
+test('chain should return value', function() {
+    var lib = new ArrayLibrary();
+    var array = [1,2,3,4,5,6,7];
+    expect(
+        lib.chain(array)
+        .filter(function(element) {
+            return element % 2;
+        })
+        .map(function(element) {
+            return element * 2;
+        })
+        .take(3)
+        .skip(1)
+        .reduce(function(accumulator, currentValue) {
+            return accumulator + currentValue;
+        })
+        .value()
+    ).toEqual(16);
+});
