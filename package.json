@@ -1,0 +1,26 @@
+{
+  "name": "functional-array-library",
+  "version": "1.0.0",
+  "description": "Implementing a functional library for working with arrays",
+  "main": "array-library.es6.js",
+  "scripts": {
+    "start": "npx babel-node array-library.es6.js",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oleguchok/functional-array-library.git"
+  },
+  "author": "Oleg Guchok",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oleguchok/functional-array-library/issues"
+  },
+  "homepage": "https://github.com/oleguchok/functional-array-library#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.7.7",
+    "@babel/core": "^7.7.7",
+    "@babel/node": "^7.7.7",
+    "@babel/preset-env": "^7.7.7"
+  }
+}
