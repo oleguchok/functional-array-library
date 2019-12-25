@@ -4,8 +4,9 @@
   "description": "Implementing a functional library for working with arrays",
   "main": "array-library.es6.js",
   "scripts": {
-    "start": "npx babel-node array-library.es6.js",
-    "test": "jest"
+    "start": "npx babel-node src/array-library.es6.js",
+    "test": "jest",
+    "compile": "babel src --out-dir .compiled --source-maps --watch"
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,8 @@
     "@babel/cli": "^7.7.7",
     "@babel/core": "^7.7.7",
     "@babel/node": "^7.7.7",
-    "@babel/preset-env": "^7.7.7"
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/preset-env": "^7.7.7",
+    "jest": "^24.9.0"
   }
 }

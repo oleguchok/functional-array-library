@@ -1,5 +1,5 @@
 // var ArrayLibrary = require('./array-library.es5');
-import ArrayLibrary from "./array-library.es6";
+import ArrayLibrary from "./src/array-library.es6"
 
 /* take */
 test('array parameter is null', function() {
@@ -16,7 +16,7 @@ test('array parameter is undefined', function() {
     }).toThrow(TypeError);
 });
 
-test('array parameter is not array', function() {
+test('take array parameter is not array', function() {
     var lib = new ArrayLibrary();
     expect(function() {
         return lib.take({});
